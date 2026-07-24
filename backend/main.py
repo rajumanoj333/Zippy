@@ -2,6 +2,15 @@
 Zippy - WhatsApp Swiggy AI Assistant Backend Service
 """
 
+import os
+import sys
+from pathlib import Path
+
+# Automatically add project root directory to sys.path to prevent ModuleNotFoundError
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +20,7 @@ from backend.api.routes import router as api_router
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Backend service integrating OpenAI AI Agent with Swiggy MCP APIs and WhatsApp Evolution API."
+    description="Backend service integrating OpenAI/Gemini AI Agent with Swiggy MCP APIs and WhatsApp Evolution API."
 )
 
 # Configure CORS
