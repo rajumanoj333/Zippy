@@ -6,7 +6,6 @@ Supports Google Gemini, OpenAI LLMs, and built-in Smart Intent Dispatcher for Sw
 import json
 import logging
 from typing import Dict, Any, List
-import google.generativeai as genai
 from openai import OpenAI
 from backend.config import settings
 from backend.mcp.swiggy_mcp_server import swiggy_mcp
@@ -29,10 +28,6 @@ class ZippyAIAgent:
     def __init__(self):
         self.gemini_key = settings.GEMINI_API_KEY
         self.openai_key = settings.OPENAI_API_KEY
-
-        if self.gemini_key:
-            genai.configure(api_key=self.gemini_key)
-            
         self.openai_client = OpenAI(api_key=self.openai_key) if self.openai_key else None
 
     async def process_message(self, user_phone: str, message_text: str) -> Dict[str, Any]:
@@ -47,14 +42,18 @@ class ZippyAIAgent:
         # Option 1: Gemini AI LLM Agent if GEMINI_API_KEY is present
         if self.gemini_key:
             try:
+                from google import genai
+                client = genai.Client(api_key=self.gemini_key)
                 logs.append({
                     "step": "AI_REASONING",
                     "title": "Gemini AI Reasoning",
                     "detail": f"Model: {settings.GEMINI_MODEL}"
                 })
-                model = genai.GenerativeModel(settings.GEMINI_MODEL)
                 prompt = f"{SYSTEM_PROMPT}\nUser request: {message_text}"
-                response = model.generate_content(prompt)
+                response = client.models.generate_content(
+                    model=settings.GEMINI_MODEL,
+                    contents=prompt,
+                )
                 
                 if response and response.text:
                     return await self._run_smart_fallback_agent(user_phone, message_text, logs, ai_summary=response.text)
