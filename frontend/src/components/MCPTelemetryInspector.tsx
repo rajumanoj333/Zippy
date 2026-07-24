@@ -61,7 +61,7 @@ export const MCPTelemetryInspector: React.FC = () => {
           <Cpu className="w-3.5 h-3.5" />
           <span>MCP Protocol Inspector</span>
         </div>
-        <h2 className="text-xl font-bold text-white">
+        <h2 className="text-xl font-display font-bold text-white">
           Swiggy MCP Tools Sandbox
         </h2>
         <p className="text-xs text-slate-400 mt-0.5">
@@ -81,9 +81,9 @@ export const MCPTelemetryInspector: React.FC = () => {
               <button
                 key={t.name}
                 onClick={() => handleToolSelect(t.name)}
-                className={`w-full text-left p-3 rounded-xl border transition-all duration-150 ${
+                className={`w-full text-left p-3 rounded-xl border transition-colors duration-150 ${
                   selectedTool === t.name
-                    ? 'bg-swiggy-orange/10 border-swiggy-orange/60 text-white shadow-sm'
+                    ? 'bg-swiggy-orange/10 border-swiggy-orange/60 text-white shadow-sm font-display'
                     : 'glass-panel border-slate-800 text-slate-300 hover:border-slate-700'
                 }`}
               >
@@ -125,7 +125,7 @@ export const MCPTelemetryInspector: React.FC = () => {
                   <button
                     onClick={handleExecute}
                     disabled={executing}
-                    className="px-3.5 py-1.5 bg-swiggy-orange hover:bg-swiggy-hover text-white rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 shadow-sm"
+                    className="px-3.5 py-1.5 bg-swiggy-orange hover:bg-swiggy-hover text-white rounded-lg text-xs font-semibold transition-colors duration-150 flex items-center space-x-1.5 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-swiggy-orange"
                   >
                     <Play className="w-3 h-3 fill-current" />
                     <span>{executing ? 'Executing...' : 'Run Tool Call'}</span>
@@ -136,7 +136,7 @@ export const MCPTelemetryInspector: React.FC = () => {
                   value={customArgs}
                   onChange={(e) => setCustomArgs(e.target.value)}
                   rows={6}
-                  className="w-full bg-[#070A0F] font-mono text-xs text-emerald-300 p-3 rounded-xl border border-slate-800 focus:outline-none focus:border-swiggy-orange"
+                  className="w-full bg-[#070A0F] font-mono text-xs text-emerald-300 p-3 rounded-xl border border-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-swiggy-orange"
                 />
               </div>
             </div>
