@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Flame, Clock, Star, ShoppingBag, Send, Check } from 'lucide-react';
+import { Search, Clock, Star, ShoppingBag, Send, Check } from 'lucide-react';
 import { fetchCatalog, Restaurant, InstamartItem, placeQuickOrder } from '../services/api';
 
 interface SwiggyCatalogExplorerProps {
@@ -71,8 +71,8 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-6">
       
-      {/* Header & Controls */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/[0.07] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Header Banner */}
+      <div className="glass-panel p-6 rounded-2xl border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-display font-bold text-white flex items-center space-x-2">
             <span>Swiggy & Instamart Catalog</span>
@@ -81,7 +81,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             </span>
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Explore authentic Swiggy dishes & Instamart groceries. Click any item to dispatch an automated WhatsApp order.
+            Browse authentic Swiggy dishes & Instamart groceries. Click any item to dispatch an automated WhatsApp order.
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search dish or grocery..."
-            className="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-swiggy-orange transition-colors"
+            className="w-full bg-slate-900/90 border border-white/[0.08] rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-swiggy-orange transition-colors"
           />
         </div>
       </div>
@@ -113,7 +113,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-150 ${
               selectedFilter === f.id
                 ? 'bg-swiggy-orange text-white shadow-sm font-display'
-                : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-white/[0.06]'
+                : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-white/[0.08]'
             }`}
           >
             {f.label}
@@ -219,7 +219,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
 
       {/* Instamart Groceries Grid */}
       {(selectedFilter === 'all' || selectedFilter === 'instamart') && (
-        <div className="space-y-3 pt-4 border-t border-white/[0.07]">
+        <div className="space-y-3 pt-4 border-t border-white/[0.08]">
           <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center space-x-1.5">
             <ShoppingBag className="w-3.5 h-3.5 text-emerald-400" />
             <span>Swiggy Instamart 10-Minute Groceries ({filteredInstamart.length} Items)</span>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Utensils, MessageSquare, Compass, Calendar, Cpu, MapPin, Settings, ShieldCheck, Activity } from 'lucide-react';
+import { Utensils, MessageSquare, Compass, Calendar, Cpu, MapPin, Settings } from 'lucide-react';
 import { SystemStatus } from '../services/api';
 
 interface NavbarProps {
@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-white/[0.07] bg-[#07090E]/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 glass-panel border-b border-white/[0.08] bg-[#04060A]/90 backdrop-blur-2xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
@@ -41,8 +41,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
             </div>
           </div>
 
-          {/* Minimalist Tab Navigation */}
-          <nav className="hidden md:flex items-center space-x-1 bg-slate-900/80 p-1 rounded-xl border border-white/[0.06]">
+          {/* Minimal Navigation Pills */}
+          <nav className="hidden md:flex items-center space-x-1 bg-slate-900/90 p-1 rounded-xl border border-white/[0.08]">
             {tabs.map((t) => {
               const Icon = t.icon;
               const isActive = activeTab === t.id;
@@ -68,9 +68,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
             })}
           </nav>
 
-          {/* Status & Settings Trigger */}
+          {/* Status & Settings */}
           <div className="flex items-center space-x-3">
-            <div className="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/[0.06] text-[11px]">
+            <div className="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900/90 border border-white/[0.08] text-[11px]">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
 
             <button
               onClick={onOpenSettings}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-white/[0.06] text-slate-300 hover:text-white transition text-xs font-semibold"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-white/[0.08] text-slate-300 hover:text-white transition text-xs font-semibold"
             >
               <Settings className="w-3.5 h-3.5 text-swiggy-orange" />
               <span className="hidden sm:inline">Settings</span>
@@ -90,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
       </div>
 
       {/* Mobile Tab Bar */}
-      <div className="md:hidden flex items-center justify-around border-t border-white/[0.07] bg-[#07090E] py-2 px-1">
+      <div className="md:hidden flex items-center justify-around border-t border-white/[0.08] bg-[#04060A] py-2 px-1">
         {tabs.map((t) => {
           const Icon = t.icon;
           const isActive = activeTab === t.id;
