@@ -6,6 +6,30 @@
 [![React 18](https://img.shields.io/badge/React-18.2.0-61DAFB.svg?style=flat&logo=react)](https://reactjs.org)
 [![Swiggy MCP](https://img.shields.io/badge/Swiggy-MCP--Protocol-FF6600.svg?style=flat)](https://swiggy.com)
 [![WhatsApp Evolution API](https://img.shields.io/badge/WhatsApp-Evolution--API-25D366.svg?style=flat&logo=whatsapp)](https://github.com/EvolutionAPI/evolution-api)
+[![21st.dev CLI](https://img.shields.io/badge/21st.dev-CLI%20v1.0-000000.svg?style=flat)](https://21st.dev)
+
+---
+
+## 🎨 21st.dev CLI Setup & Integration
+
+Zippy is pre-configured with the official `@21st-dev/cli` for searching, generating, and publishing 21st.dev design components.
+
+```bash
+# 1. Login to 21st.dev (or set API_KEY_21ST environment variable)
+21st login
+
+# 2. Search components, themes, and templates
+21st search "pricing table"
+21st search "food card" --type component
+
+# 3. Add components to the project
+21st add shadcn/button
+
+# 4. Generate UI variants with 21st AI
+21st generate "High protein food card with dark glassmorphism"
+
+# 5. In CI/CD scripts, pass --api-key $API_KEY_21ST
+```
 
 ---
 
