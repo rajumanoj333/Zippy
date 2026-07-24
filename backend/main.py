@@ -6,16 +6,25 @@ import os
 import sys
 from pathlib import Path
 
-# Automatically add project root directory to sys.path to prevent ModuleNotFoundError
+# Automatically add project root directory and backend directory to sys.path to prevent ModuleNotFoundError
 ROOT_DIR = Path(__file__).resolve().parent.parent
+BACKEND_DIR = Path(__file__).resolve().parent
+
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
 
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.config import settings
-from backend.api.routes import router as api_router
+
+try:
+    from backend.config import settings
+    from backend.api.routes import router as api_router
+except ImportError:
+    from config import settings
+    from api.routes import router as api_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -46,4 +55,4 @@ async def root():
     }
 
 if __name__ == "__main__":
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app" if os.getcwd().endswith("backend") else "backend.main:app", host="0.0.0.0", port=8000, reload=True)

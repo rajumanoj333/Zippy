@@ -7,9 +7,15 @@ import json
 import logging
 from typing import Dict, Any, List
 from openai import OpenAI
-from backend.config import settings
-from backend.mcp.swiggy_mcp_server import swiggy_mcp
-from backend.whatsapp.whatsapp_service import whatsapp_service
+
+try:
+    from backend.config import settings
+    from backend.mcp.swiggy_mcp_server import swiggy_mcp
+    from backend.whatsapp.whatsapp_service import whatsapp_service
+except ImportError:
+    from config import settings
+    from mcp.swiggy_mcp_server import swiggy_mcp
+    from whatsapp.whatsapp_service import whatsapp_service
 
 logger = logging.getLogger("agent_engine")
 
@@ -39,7 +45,6 @@ class ZippyAIAgent:
             "detail": f"Sender: {user_phone} | Message: \"{message_text}\""
         })
 
-        # Option 1: Gemini AI LLM Agent if GEMINI_API_KEY is present
         if self.gemini_key:
             try:
                 from google import genai
@@ -60,14 +65,12 @@ class ZippyAIAgent:
             except Exception as e:
                 logger.warning(f"Gemini API execution note: {e}")
 
-        # Option 2: OpenAI Agent if OPENAI_API_KEY is present
         if self.openai_client:
             try:
                 return await self._run_openai_agent(message_text, logs)
             except Exception as e:
                 logger.warning(f"OpenAI Execution note: {e}")
 
-        # Option 3: Smart Built-in Engine
         return await self._run_smart_fallback_agent(user_phone, message_text, logs)
 
     async def _run_openai_agent(self, text: str, logs: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -159,7 +162,6 @@ class ZippyAIAgent:
         lower_text = text.lower()
         mcp_calls = []
 
-        # Intent 1: Track order
         if any(w in lower_text for w in ["track", "where is my order", "status", "order status"]):
             logs.append({
                 "step": "INTENT_DETECTED",
@@ -183,7 +185,6 @@ class ZippyAIAgent:
             else:
                 reply = "No active orders found right now."
 
-        # Intent 2: Meal planning
         elif any(w in lower_text for w in ["plan", "meal plan", "diet", "weekly", "days", "protein plan"]):
             logs.append({
                 "step": "INTENT_DETECTED",
@@ -211,7 +212,6 @@ class ZippyAIAgent:
             mcp_calls.append({"tool": "swiggy_create_meal_plan", "result": res})
             reply = whatsapp_service.format_meal_plan_response(res)
 
-        # Intent 3: Instamart groceries
         elif any(w in lower_text for w in ["instamart", "grocery", "milk", "eggs", "bread", "avocado", "oats", "whey"]):
             logs.append({
                 "step": "INTENT_DETECTED",
@@ -240,7 +240,6 @@ class ZippyAIAgent:
             else:
                 reply = "No Instamart items found matching your search query."
 
-        # Intent 4: Direct Order confirmation / Checkout
         elif any(w in lower_text for w in ["order #", "order 1", "order 2", "checkout", "place order", "buy now", "confirm"]):
             logs.append({
                 "step": "INTENT_DETECTED",
@@ -281,7 +280,6 @@ class ZippyAIAgent:
                 f"Reply *'Track order'* for live updates."
             )
 
-        # Intent 5: Food search & recommendations (Default)
         else:
             logs.append({
                 "step": "INTENT_DETECTED",
