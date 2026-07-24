@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Flame, Clock, Star, ShoppingBag, Send, Check, Sparkles, Filter } from 'lucide-react';
+import { Search, Flame, Clock, Star, ShoppingBag, Send, Check } from 'lucide-react';
 import { fetchCatalog, Restaurant, InstamartItem, placeQuickOrder } from '../services/api';
 
 interface SwiggyCatalogExplorerProps {
@@ -71,17 +71,17 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-6">
       
-      {/* Header & Search */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Header & Controls */}
+      <div className="glass-panel p-6 rounded-2xl border border-white/[0.07] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center space-x-2">
+          <h2 className="text-xl font-display font-bold text-white flex items-center space-x-2">
             <span>Swiggy & Instamart Catalog</span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-swiggy-orange/10 text-swiggy-orange border border-swiggy-orange/20 font-semibold">
+            <span className="text-[10px] px-2 py-0.5 rounded-md bg-swiggy-orange/10 text-swiggy-orange border border-swiggy-orange/20 font-semibold font-sans">
               Live Catalog
             </span>
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Explore authentic Swiggy dishes & Instamart groceries. Click to dispatch direct WhatsApp order.
+            Explore authentic Swiggy dishes & Instamart groceries. Click any item to dispatch an automated WhatsApp order.
           </p>
         </div>
 
@@ -91,8 +91,8 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search dish or grocery item..."
-            className="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-swiggy-orange"
+            placeholder="Search dish or grocery..."
+            className="w-full bg-slate-900/90 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-swiggy-orange transition-colors"
           />
         </div>
       </div>
@@ -112,8 +112,8 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             onClick={() => setSelectedFilter(f.id)}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-150 ${
               selectedFilter === f.id
-                ? 'bg-swiggy-orange text-white shadow-sm'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-swiggy-orange text-white shadow-sm font-display'
+                : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-white/[0.06]'
             }`}
           >
             {f.label}
@@ -132,22 +132,22 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             {filteredDishes.map((dish) => (
               <div
                 key={dish.id}
-                className="group glass-panel rounded-xl overflow-hidden border border-slate-800/90 hover:border-slate-700 transition-all duration-200 flex flex-col justify-between"
+                className="group glass-card-interactive rounded-xl overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-40 w-full overflow-hidden bg-slate-800">
+                  <div className="relative h-40 w-full overflow-hidden bg-slate-900">
                     <img
                       src={dish.image_url}
                       alt={dish.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-2.5 left-2.5">
-                      <span className={`px-2 py-0.5 rounded text-[9px] font-bold tracking-wider ${dish.veg ? 'bg-emerald-950/90 text-emerald-400 border border-emerald-500/40' : 'bg-rose-950/90 text-rose-400 border border-rose-500/40'}`}>
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider ${dish.veg ? 'bg-emerald-950/90 text-emerald-400 border border-emerald-500/30' : 'bg-rose-950/90 text-rose-400 border border-rose-500/30'}`}>
                         {dish.veg ? 'VEG' : 'NON-VEG'}
                       </span>
                     </div>
 
-                    <div className="absolute bottom-2.5 right-2.5 bg-slate-950/80 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] font-semibold text-white flex items-center space-x-1 border border-slate-800">
+                    <div className="absolute bottom-2.5 right-2.5 bg-slate-950/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-semibold text-white flex items-center space-x-1 border border-white/10">
                       <Clock className="w-3 h-3 text-amber-400" />
                       <span>{dish.delivery_time_mins} mins</span>
                     </div>
@@ -156,7 +156,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
                   <div className="p-3.5 space-y-1.5">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h4 className="font-bold text-white text-xs line-clamp-1 group-hover:text-swiggy-orange transition-colors">
+                        <h4 className="font-display font-bold text-white text-xs line-clamp-1 group-hover:text-swiggy-orange transition-colors">
                           {dish.name}
                         </h4>
                         <p className="text-[11px] text-slate-400 flex items-center space-x-1 mt-0.5">
@@ -168,7 +168,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
                           </span>
                         </p>
                       </div>
-                      <span className="font-bold text-sm text-emerald-400 shrink-0">
+                      <span className="font-display font-bold text-sm text-emerald-400 shrink-0">
                         ₹{dish.price}
                       </span>
                     </div>
@@ -196,7 +196,7 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
                   <button
                     onClick={() => handleQuickOrder(dish)}
                     disabled={orderedItem === dish.id}
-                    className="w-full py-2 rounded-lg bg-swiggy-orange hover:bg-swiggy-hover text-white font-semibold text-xs flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
+                    className="w-full py-2 rounded-lg bg-swiggy-orange hover:bg-swiggy-hover text-white font-semibold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-sm"
                   >
                     {orderedItem === dish.id ? (
                       <>
@@ -217,9 +217,9 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
         </div>
       )}
 
-      {/* Instamart Grid */}
+      {/* Instamart Groceries Grid */}
       {(selectedFilter === 'all' || selectedFilter === 'instamart') && (
-        <div className="space-y-3 pt-4 border-t border-slate-800">
+        <div className="space-y-3 pt-4 border-t border-white/[0.07]">
           <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider flex items-center space-x-1.5">
             <ShoppingBag className="w-3.5 h-3.5 text-emerald-400" />
             <span>Swiggy Instamart 10-Minute Groceries ({filteredInstamart.length} Items)</span>
@@ -229,21 +229,21 @@ export const SwiggyCatalogExplorer: React.FC<SwiggyCatalogExplorerProps> = ({ on
             {filteredInstamart.map((item) => (
               <div
                 key={item.id}
-                className="glass-panel rounded-xl p-3.5 border border-slate-800/90 hover:border-slate-700 transition flex items-center space-x-3"
+                className="glass-card-interactive rounded-xl p-3.5 flex items-center space-x-3"
               >
                 <img
                   src={item.image_url}
                   alt={item.name}
-                  className="w-16 h-16 rounded-lg object-cover bg-slate-800 shrink-0"
+                  className="w-16 h-16 rounded-lg object-cover bg-slate-900 shrink-0"
                 />
                 <div className="flex-1 min-w-0 space-y-0.5">
                   <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     10 MINS
                   </span>
-                  <h4 className="font-semibold text-white text-xs truncate">{item.name}</h4>
+                  <h4 className="font-display font-semibold text-white text-xs truncate">{item.name}</h4>
                   <p className="text-[11px] text-slate-400">{item.unit}</p>
                   <div className="flex items-center justify-between pt-1">
-                    <span className="font-bold text-xs text-emerald-400">₹{item.price}</span>
+                    <span className="font-display font-bold text-xs text-emerald-400">₹{item.price}</span>
                     <button
                       onClick={() => handleQuickOrder(item)}
                       className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center space-x-1 transition-colors"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Dumbbell, Sparkles, Send, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Calendar, Dumbbell, Sparkles, Send, RefreshCw } from 'lucide-react';
 import { generateMealPlan, MealPlanDay } from '../services/api';
 
 interface AIMealPlannerProps {
@@ -44,23 +44,23 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-6">
       
       {/* Header Banner */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800">
+      <div className="glass-panel p-6 rounded-2xl border border-white/[0.07]">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-swiggy-orange/10 text-swiggy-orange border border-swiggy-orange/20 text-xs font-semibold">
+            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-md bg-swiggy-orange/10 text-swiggy-orange border border-swiggy-orange/20 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>AI Meal Planner</span>
             </div>
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="text-xl font-display font-bold text-white">
               Automated Swiggy Meal Planning
             </h2>
             <p className="text-xs text-slate-400">
-              Configure target daily budget and protein requirements. Zippy selects dishes across Swiggy restaurants and Instamart.
+              Configure daily budget and protein targets. Zippy selects dishes across Swiggy restaurants and Instamart.
             </p>
           </div>
 
           {/* Form Controls */}
-          <div className="w-full lg:w-auto grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+          <div className="w-full lg:w-auto grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-900/90 p-3.5 rounded-xl border border-white/[0.06]">
             <div>
               <label className="text-[11px] font-medium text-slate-400 block mb-1">
                 Daily Budget (₹)
@@ -69,7 +69,7 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
                 type="number"
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white font-semibold focus:outline-none focus:border-swiggy-orange"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white font-display font-semibold focus:outline-none focus:border-swiggy-orange"
               />
             </div>
 
@@ -81,7 +81,7 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
                 type="number"
                 value={protein}
                 onChange={(e) => setProtein(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-emerald-400 font-semibold focus:outline-none focus:border-swiggy-orange"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-emerald-400 font-display font-semibold focus:outline-none focus:border-swiggy-orange"
               />
             </div>
 
@@ -117,16 +117,16 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
 
       {/* Tabs Header */}
       {planDays.length > 0 && (
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-white/[0.07] pb-3">
           <div className="flex items-center space-x-2">
             {planDays.map((d) => (
               <button
                 key={d.day}
                 onClick={() => setSelectedDayTab(d.day)}
-                className={`px-4 py-2 rounded-lg font-semibold text-xs transition-all ${
+                className={`px-4 py-2 rounded-lg font-display font-semibold text-xs transition-all ${
                   selectedDayTab === d.day
                     ? 'bg-swiggy-orange text-white shadow-sm'
-                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    : 'bg-slate-900/80 text-slate-400 hover:text-white border border-white/[0.06]'
                 }`}
               >
                 DAY {d.day} SCHEDULE
@@ -148,10 +148,10 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
       {currentDayData && (
         <div className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div className="glass-panel p-4 rounded-xl border border-white/[0.07] flex items-center justify-between">
               <div>
                 <p className="text-[11px] text-slate-400 font-medium">Total Day Cost</p>
-                <p className="text-lg font-bold text-white mt-0.5">
+                <p className="text-lg font-display font-bold text-white mt-0.5">
                   ₹{currentDayData.daily_stats.total_cost} <span className="text-xs font-normal text-slate-400">/ ₹{budget}</span>
                 </p>
               </div>
@@ -160,20 +160,20 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
               </span>
             </div>
 
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div className="glass-panel p-4 rounded-xl border border-white/[0.07] flex items-center justify-between">
               <div>
                 <p className="text-[11px] text-slate-400 font-medium">Protein Delivered</p>
-                <p className="text-lg font-bold text-emerald-400 mt-0.5">
+                <p className="text-lg font-display font-bold text-emerald-400 mt-0.5">
                   {currentDayData.daily_stats.total_protein_g}g <span className="text-xs font-normal text-slate-400">/ {protein}g target</span>
                 </p>
               </div>
               <Dumbbell className="w-5 h-5 text-emerald-400 opacity-80" />
             </div>
 
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div className="glass-panel p-4 rounded-xl border border-white/[0.07] flex items-center justify-between">
               <div>
                 <p className="text-[11px] text-slate-400 font-medium">Estimated Calories</p>
-                <p className="text-lg font-bold text-amber-400 mt-0.5">
+                <p className="text-lg font-display font-bold text-amber-400 mt-0.5">
                   {currentDayData.daily_stats.total_calories} <span className="text-xs font-normal text-slate-400">kcal</span>
                 </p>
               </div>
@@ -183,20 +183,20 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Breakfast */}
-            <div className="glass-panel p-4.5 rounded-xl border border-slate-800 space-y-2.5">
+            <div className="glass-panel p-4.5 rounded-xl border border-white/[0.07] space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider font-display">
                   Breakfast
                 </span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 bg-slate-800 rounded text-slate-300">
+                <span className="text-[10px] font-semibold px-2 py-0.5 bg-slate-800/80 rounded text-slate-300">
                   {currentDayData.meals.breakfast.source}
                 </span>
               </div>
-              <h4 className="font-bold text-white text-sm">
+              <h4 className="font-display font-bold text-white text-sm">
                 {currentDayData.meals.breakfast.name}
               </h4>
-              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800/80">
-                <span className="font-bold text-emerald-400">₹{currentDayData.meals.breakfast.price}</span>
+              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-white/[0.07]">
+                <span className="font-display font-bold text-emerald-400">₹{currentDayData.meals.breakfast.price}</span>
                 <span className="font-medium text-slate-400">Protein: {currentDayData.meals.breakfast.protein_g}g</span>
               </div>
             </div>
@@ -204,37 +204,37 @@ export const AIMealPlanner: React.FC<AIMealPlannerProps> = ({ onSendToWhatsApp }
             {/* Lunch */}
             <div className="glass-panel p-4.5 rounded-xl border border-swiggy-orange/30 bg-swiggy-orange/5 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-swiggy-orange uppercase tracking-wider">
+                <span className="text-xs font-bold text-swiggy-orange uppercase tracking-wider font-display">
                   Lunch
                 </span>
                 <span className="text-[10px] font-semibold px-2 py-0.5 bg-swiggy-orange/20 text-swiggy-orange rounded">
                   {currentDayData.meals.lunch.restaurant}
                 </span>
               </div>
-              <h4 className="font-bold text-white text-sm">
+              <h4 className="font-display font-bold text-white text-sm">
                 {currentDayData.meals.lunch.name}
               </h4>
-              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800/80">
-                <span className="font-bold text-emerald-400">₹{currentDayData.meals.lunch.price}</span>
+              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-white/[0.07]">
+                <span className="font-display font-bold text-emerald-400">₹{currentDayData.meals.lunch.price}</span>
                 <span className="font-medium text-slate-400">Protein: {currentDayData.meals.lunch.protein_g}g</span>
               </div>
             </div>
 
             {/* Dinner */}
-            <div className="glass-panel p-4.5 rounded-xl border border-slate-800 space-y-2.5">
+            <div className="glass-panel p-4.5 rounded-xl border border-white/[0.07] space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider font-display">
                   Dinner
                 </span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 bg-slate-800 rounded text-slate-300">
+                <span className="text-[10px] font-semibold px-2 py-0.5 bg-slate-800/80 rounded text-slate-300">
                   {currentDayData.meals.dinner.restaurant}
                 </span>
               </div>
-              <h4 className="font-bold text-white text-sm">
+              <h4 className="font-display font-bold text-white text-sm">
                 {currentDayData.meals.dinner.name}
               </h4>
-              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800/80">
-                <span className="font-bold text-emerald-400">₹{currentDayData.meals.dinner.price}</span>
+              <div className="flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-white/[0.07]">
+                <span className="font-display font-bold text-emerald-400">₹{currentDayData.meals.dinner.price}</span>
                 <span className="font-medium text-slate-400">Protein: {currentDayData.meals.dinner.protein_g}g</span>
               </div>
             </div>

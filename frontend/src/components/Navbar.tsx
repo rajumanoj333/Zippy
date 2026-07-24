@@ -19,18 +19,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80 bg-[#080C14]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 glass-panel border-b border-white/[0.07] bg-[#07090E]/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
           {/* Brand Identity */}
           <div className="flex items-center space-x-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-swiggy-orange to-amber-500 flex items-center justify-center shadow-md shadow-swiggy-orange/20">
-              <Utensils className="w-5 h-5 text-white" />
+              <Utensils className="w-4 h-4 text-white" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-lg tracking-tight text-white">Zippy</span>
+                <span className="font-display font-extrabold text-lg tracking-tight text-white">Zippy</span>
                 <span className="px-2 py-0.5 text-[10px] font-semibold bg-swiggy-orange/10 text-swiggy-orange border border-swiggy-orange/20 rounded-md">
                   Swiggy MCP Engine
                 </span>
@@ -41,8 +41,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
             </div>
           </div>
 
-          {/* Minimalist Tab Bar Navigation */}
-          <nav className="hidden md:flex items-center space-x-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+          {/* Minimalist Tab Navigation */}
+          <nav className="hidden md:flex items-center space-x-1 bg-slate-900/80 p-1 rounded-xl border border-white/[0.06]">
             {tabs.map((t) => {
               const Icon = t.icon;
               const isActive = activeTab === t.id;
@@ -52,14 +52,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
                   onClick={() => setActiveTab(t.id)}
                   className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
                     isActive
-                      ? 'bg-swiggy-orange text-white shadow-sm shadow-swiggy-orange/20'
+                      ? 'bg-swiggy-orange text-white shadow-sm shadow-swiggy-orange/20 font-display'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
                   <span>{t.label}</span>
                   {t.badge && (
-                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-emerald-500/20 text-emerald-400 rounded-md border border-emerald-500/30">
+                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-emerald-500/15 text-emerald-400 rounded-md border border-emerald-500/30">
                       {t.badge}
                     </span>
                   )}
@@ -68,9 +68,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
             })}
           </nav>
 
-          {/* Status Badge & Config */}
+          {/* Status & Settings Trigger */}
           <div className="flex items-center space-x-3">
-            <div className="hidden lg:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[11px]">
+            <div className="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/[0.06] text-[11px]">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
 
             <button
               onClick={onOpenSettings}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition text-xs font-semibold"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-white/[0.06] text-slate-300 hover:text-white transition text-xs font-semibold"
             >
               <Settings className="w-3.5 h-3.5 text-swiggy-orange" />
               <span className="hidden sm:inline">Settings</span>
@@ -90,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
       </div>
 
       {/* Mobile Tab Bar */}
-      <div className="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-[#080C14] py-2 px-1">
+      <div className="md:hidden flex items-center justify-around border-t border-white/[0.07] bg-[#07090E] py-2 px-1">
         {tabs.map((t) => {
           const Icon = t.icon;
           const isActive = activeTab === t.id;
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, systemS
               key={t.id}
               onClick={() => setActiveTab(t.id)}
               className={`flex flex-col items-center px-2 py-1 rounded text-[10px] font-medium ${
-                isActive ? 'text-swiggy-orange font-bold' : 'text-slate-400'
+                isActive ? 'text-swiggy-orange font-bold font-display' : 'text-slate-400'
               }`}
             >
               <Icon className="w-4 h-4 mb-0.5" />

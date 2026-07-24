@@ -10,17 +10,23 @@ export default {
         swiggy: {
           orange: "#FF6600",
           hover: "#E55C00",
-          light: "#FFF0E6"
+          glow: "rgba(255, 102, 0, 0.15)"
         },
         brand: {
-          dark: "#0B0F17",
-          card: "#131926",
-          border: "#202B3E",
+          bg: "#07090E",
+          card: "#0E131F",
+          border: "rgba(255, 255, 255, 0.07)",
           emerald: "#10B981"
         }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'glow-orange': '0 0 25px -5px rgba(255, 102, 0, 0.25)',
+        'glow-emerald': '0 0 20px -4px rgba(16, 185, 129, 0.2)',
+        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
       }
     },
   },
