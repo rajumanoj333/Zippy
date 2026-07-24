@@ -15,14 +15,14 @@ from backend.whatsapp.whatsapp_service import whatsapp_service
 logger = logging.getLogger("agent_engine")
 
 SYSTEM_PROMPT = """
-You are Zippy, an ultra-fast WhatsApp AI Assistant integrated with Swiggy MCP (Model Context Protocol).
+You are Zippy, an automated WhatsApp AI Assistant integrated with Swiggy MCP (Model Context Protocol).
 Your job is to understand user requests in plain conversational language and complete real-world tasks on Swiggy & Swiggy Instamart:
 1. Searching for food dishes based on budget, cuisine, high protein, and vegetarian constraints.
 2. Searching Instamart for 10-minute grocery items (milk, eggs, bread, snacks).
 3. Planning daily or multi-day meals optimized for calories, protein, and daily budget.
 4. Building carts, placing orders, and tracking live delivery status.
 
-Always format your response cleanly for WhatsApp with rich emojis, bold text (*text*), and clear next steps.
+Always format your response cleanly for WhatsApp with concise, professional text, bold headings (*heading*), bullet points, and clear call-to-action steps. Avoid informal emoji spam.
 """
 
 class ZippyAIAgent:
@@ -40,7 +40,7 @@ class ZippyAIAgent:
 
         logs.append({
             "step": "RECEIVE_MESSAGE",
-            "title": "Received WhatsApp User Request",
+            "title": "Received WhatsApp Request",
             "detail": f"Sender: {user_phone} | Message: \"{message_text}\""
         })
 
@@ -49,17 +49,14 @@ class ZippyAIAgent:
             try:
                 logs.append({
                     "step": "AI_REASONING",
-                    "title": "Gemini AI LLM Processing",
+                    "title": "Gemini AI Reasoning",
                     "detail": f"Model: {settings.GEMINI_MODEL}"
                 })
-                # Attempt Gemini call
                 model = genai.GenerativeModel(settings.GEMINI_MODEL)
                 prompt = f"{SYSTEM_PROMPT}\nUser request: {message_text}"
                 response = model.generate_content(prompt)
                 
-                # Check if text returned
                 if response and response.text:
-                    # Execute appropriate Swiggy MCP tool based on input context
                     return await self._run_smart_fallback_agent(user_phone, message_text, logs, ai_summary=response.text)
             except Exception as e:
                 logger.warning(f"Gemini API execution note: {e}")
@@ -176,15 +173,16 @@ class ZippyAIAgent:
             order = res.get("order", {})
             if order:
                 reply = (
-                    f"🚴 *Swiggy Live Order Tracking ({order['order_id']})*\n\n"
-                    f"📍 *Status:* {order['status']}\n"
-                    f"🏪 *Restaurant:* {order['restaurant_name']}\n"
-                    f"🛵 *Delivery Rider:* {order['delivery_partner']['name']} ({order['delivery_partner']['rating']}⭐)\n"
-                    f"⏱️ *Estimated Delivery:* In {order['eta_minutes']} mins\n"
-                    f"🏠 *Delivery Address:* {order['delivery_address']}"
+                    f"*SWIGGY LIVE ORDER TRACKING ({order['order_id']})*\n"
+                    f"━━━━━━━━━━━━━━━━━━━━━━\n"
+                    f"• Status: {order['status']}\n"
+                    f"• Restaurant: {order['restaurant_name']}\n"
+                    f"• Delivery Partner: {order['delivery_partner']['name']} ({order['delivery_partner']['rating']} ★)\n"
+                    f"• Estimated Delivery: In {order['eta_minutes']} mins\n"
+                    f"• Address: {order['delivery_address']}"
                 )
             else:
-                reply = "ℹ️ You don't have any active orders right now."
+                reply = "No active orders found right now."
 
         # Intent 2: Meal planning
         elif any(w in lower_text for w in ["plan", "meal plan", "diet", "weekly", "days", "protein plan"]):
@@ -232,14 +230,16 @@ class ZippyAIAgent:
             
             items = res.get("items", [])
             if items:
-                reply = "⚡ *Swiggy Instamart (10-Min Delivery)*\n\n"
+                reply = "*SWIGGY INSTAMART (10-MIN DELIVERY)*\n"
+                reply += "━━━━━━━━━━━━━━━━━━━━━━\n\n"
                 for idx, it in enumerate(items[:4], 1):
                     reply += f"*{idx}. {it['name']}*\n"
-                    reply += f"   💰 ₹{it['price']} | 📦 {it['unit']} | ⭐ {it['rating']}\n"
-                    reply += f"   ⚡ Delivered in {it['delivery_mins']} mins\n\n"
-                reply += "💡 *Reply:* 'Order #1' to checkout immediately on Instamart!"
+                    reply += f"   Price: ₹{it['price']} • Unit: {it['unit']} • Rating: {it['rating']} ★\n"
+                    reply += f"   Delivery: {it['delivery_mins']} mins\n\n"
+                reply += "━━━━━━━━━━━━━━━━━━━━━━\n"
+                reply += "Reply with *'Order #1'* to checkout immediately."
             else:
-                reply = "❌ No Instamart items found matching your search query."
+                reply = "No Instamart items found matching your search query."
 
         # Intent 4: Direct Order confirmation / Checkout
         elif any(w in lower_text for w in ["order #", "order 1", "order 2", "checkout", "place order", "buy now", "confirm"]):
@@ -271,14 +271,15 @@ class ZippyAIAgent:
 
             ord_info = order_res["order"]
             reply = (
-                f"🎉 *SWIGGY ORDER CONFIRMED! ({ord_info['order_id']})*\n\n"
-                f"🍲 *Items:* {ord_info['items'][0]['name']} (x{ord_info['items'][0]['quantity']})\n"
-                f"🏪 *Restaurant:* {ord_info['restaurant_name']}\n"
-                f"💰 *Total Paid:* ₹{ord_info['total_amount']}\n"
-                f"🏠 *Delivery To:* {ord_info['delivery_address']}\n"
-                f"⏱️ *ETA:* {ord_info['eta_minutes']} mins\n\n"
-                f"🛵 *Delivery Exec:* {ord_info['delivery_partner']['name']} ({ord_info['delivery_partner']['phone']})\n"
-                f"💡 *Reply:* 'Track order' anytime for real-time status updates!"
+                f"*SWIGGY ORDER CONFIRMED ({ord_info['order_id']})*\n"
+                f"━━━━━━━━━━━━━━━━━━━━━━\n"
+                f"• Item: {ord_info['items'][0]['name']} (x{ord_info['items'][0]['quantity']})\n"
+                f"• Restaurant: {ord_info['restaurant_name']}\n"
+                f"• Total Paid: ₹{ord_info['total_amount']}\n"
+                f"• Delivery Address: {ord_info['delivery_address']}\n"
+                f"• ETA: {ord_info['eta_minutes']} mins\n"
+                f"• Executive: {ord_info['delivery_partner']['name']} ({ord_info['delivery_partner']['phone']})\n\n"
+                f"Reply *'Track order'* for live updates."
             )
 
         # Intent 5: Food search & recommendations (Default)
