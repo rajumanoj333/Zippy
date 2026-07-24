@@ -23,11 +23,10 @@ class WhatsAppService:
         media_url: Optional[str] = None
     ) -> Dict[str, Any]:
         """
-        Sends a WhatsApp message via Evolution API (or falls back gracefully to logged output if offline).
+        Sends a WhatsApp message via Evolution API or Twilio fallback.
         """
         logger.info(f"[WhatsApp Send] To: {recipient_phone} | Msg: {text_content[:60]}...")
         
-        # Clean phone number format
         phone = recipient_phone.replace("whatsapp:", "").replace("+", "").replace(" ", "")
 
         # Try Evolution API
@@ -40,7 +39,7 @@ class WhatsAppService:
             payload = {
                 "number": phone,
                 "options": {
-                    "delay": 1200,
+                    "delay": 1000,
                     "presence": "composing"
                 },
                 "textMessage": {
@@ -78,7 +77,7 @@ class WhatsAppService:
             except Exception as e:
                 logger.warning(f"Twilio send failed: {e}")
 
-        # Default fallback (Local simulator mock delivery)
+        # Default fallback
         return {
             "status": "delivered_simulator",
             "recipient": recipient_phone,
@@ -87,20 +86,23 @@ class WhatsAppService:
         }
 
     def format_food_recommendations(self, dishes: list) -> str:
-        """Formats Swiggy search results into a clean WhatsApp text layout."""
+        """Formats Swiggy search results into a clean, professional WhatsApp layout."""
         if not dishes:
-            return "❌ *No matching dishes found on Swiggy within your parameters.* Try adjusting budget or cuisine preference!"
+            return "*No matching dishes found on Swiggy within your parameters.* Try adjusting budget or dietary preferences."
 
-        msg = "🚀 *Swiggy AI Agent Recommendations*\n\n"
+        msg = "*SWIGGY AI RECOMMENDATIONS*\n"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n\n"
+        
         for idx, item in enumerate(dishes[:4], 1):
-            veg_badge = "🟢 Veg" if item.get("veg") else "🔴 Non-Veg"
-            protein_tag = f" (💪 {item['protein_g']}g Protein)" if item.get("protein_g") else ""
+            veg_tag = "[VEG]" if item.get("veg") else "[NON-VEG]"
+            protein_tag = f" • Protein: {item['protein_g']}g" if item.get("protein_g") else ""
             msg += f"*{idx}. {item['name']}*\n"
-            msg += f"   📍 {item['restaurant_name']} ({item['restaurant_rating']}⭐)\n"
-            msg += f"   💰 ₹{item['price']} | {veg_badge}{protein_tag}\n"
-            msg += f"   ⏱️ Delivery in {item['delivery_time_mins']} mins\n\n"
+            msg += f"   Restaurant: {item['restaurant_name']} ({item['restaurant_rating']} ★)\n"
+            msg += f"   Price: ₹{item['price']} • {veg_tag}{protein_tag}\n"
+            msg += f"   ETA: {item['delivery_time_mins']} mins\n\n"
 
-        msg += "💡 *Reply with:* 'Order #1' or 'Add #1 to cart' to proceed!"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n"
+        msg += "Reply with *'Order #1'* or *'Add #1 to cart'* to confirm checkout."
         return msg
 
     def format_meal_plan_response(self, plan_data: dict) -> str:
@@ -109,20 +111,21 @@ class WhatsAppService:
         summary = plan_data.get("summary", "Swiggy AI Meal Plan")
         budget = plan_data.get("daily_budget", 500)
 
-        msg = f"🥗 *{summary}*\n"
-        msg += f"🎯 *Target Budget:* ₹{budget}/day\n"
-        msg += "━━━━━━━━━━━━━━━━━━━\n\n"
+        msg = f"*{summary.upper()}*\n"
+        msg += f"Target Daily Budget: ₹{budget}\n"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n\n"
 
         for day in days:
             meals = day.get("meals", {})
             stats = day.get("daily_stats", {})
-            msg += f"📅 *DAY {day['day']} MEAL PLAN*\n"
-            msg += f"🌅 *Breakfast:* {meals['breakfast']['name']} (₹{meals['breakfast']['price']} - {meals['breakfast']['protein_g']}g Protein)\n"
-            msg += f"☀️ *Lunch:* {meals['lunch']['name']} from {meals['lunch']['restaurant']} (₹{meals['lunch']['price']} - {meals['lunch']['protein_g']}g Protein)\n"
-            msg += f"🌙 *Dinner:* {meals['dinner']['name']} from {meals['dinner']['restaurant']} (₹{meals['dinner']['price']} - {meals['dinner']['protein_g']}g Protein)\n"
-            msg += f"📊 *Total:* ₹{stats['total_cost']} | {stats['total_protein_g']}g Protein | {stats['total_calories']} kcal\n\n"
+            msg += f"*DAY {day['day']} MEAL SCHEDULE*\n"
+            msg += f"• *Breakfast:* {meals['breakfast']['name']} (₹{meals['breakfast']['price']} | {meals['breakfast']['protein_g']}g protein)\n"
+            msg += f"• *Lunch:* {meals['lunch']['name']} - {meals['lunch']['restaurant']} (₹{meals['lunch']['price']} | {meals['lunch']['protein_g']}g protein)\n"
+            msg += f"• *Dinner:* {meals['dinner']['name']} - {meals['dinner']['restaurant']} (₹{meals['dinner']['price']} | {meals['dinner']['protein_g']}g protein)\n"
+            msg += f"• *Daily Total:* ₹{stats['total_cost']} | {stats['total_protein_g']}g Protein | {stats['total_calories']} kcal\n\n"
 
-        msg += "⚡ *Reply:* 'Order Day 1' to place Day 1 meals immediately on Swiggy!"
+        msg += "━━━━━━━━━━━━━━━━━━━━━━\n"
+        msg += "Reply with *'Order Day 1'* to place Day 1 meals immediately."
         return msg
 
 whatsapp_service = WhatsAppService()
