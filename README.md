@@ -10,7 +10,7 @@
 
 ---
 
-## 🎨 21st.dev CLI Setup & Integration
+## 🎨 CLI Setup & Integration
 
 Zippy is pre-configured with the official `@21st-dev/cli` for searching, generating, and publishing 21st.dev design components.
 
