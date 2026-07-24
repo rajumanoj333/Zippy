@@ -1,0 +1,2 @@
+# Zippy
+Swiggy MCP
