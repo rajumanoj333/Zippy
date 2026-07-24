@@ -5,11 +5,19 @@ FastAPI Router Definitions for Zippy Swiggy AI Assistant
 from typing import Dict, Any, Optional, List
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
 from pydantic import BaseModel
-from backend.config import settings
-from backend.agent.agent_engine import agent_engine
-from backend.mcp.swiggy_mcp_server import swiggy_mcp, IN_MEMORY_ORDERS, IN_MEMORY_CARTS
-from backend.mcp.swiggy_catalog import FOOD_RESTAURANTS, INSTAMART_ITEMS
-from backend.whatsapp.whatsapp_service import whatsapp_service
+
+try:
+    from backend.config import settings
+    from backend.agent.agent_engine import agent_engine
+    from backend.mcp.swiggy_mcp_server import swiggy_mcp, IN_MEMORY_ORDERS, IN_MEMORY_CARTS
+    from backend.mcp.swiggy_catalog import FOOD_RESTAURANTS, INSTAMART_ITEMS
+    from backend.whatsapp.whatsapp_service import whatsapp_service
+except ImportError:
+    from config import settings
+    from agent.agent_engine import agent_engine
+    from mcp.swiggy_mcp_server import swiggy_mcp, IN_MEMORY_ORDERS, IN_MEMORY_CARTS
+    from mcp.swiggy_catalog import FOOD_RESTAURANTS, INSTAMART_ITEMS
+    from whatsapp.whatsapp_service import whatsapp_service
 
 router = APIRouter(prefix="/api")
 
@@ -80,11 +88,9 @@ async def whatsapp_webhook(request: Request, background_tasks: BackgroundTasks):
     except Exception:
         body = {}
 
-    # Extract message & sender from Evolution API webhook schema or Twilio
     sender = "+91 98765 43210"
     message_text = ""
 
-    # Evolution API payload parsing
     if "data" in body and "message" in body.get("data", {}):
         msg_data = body["data"]
         sender = msg_data.get("key", {}).get("remoteJid", sender)
@@ -92,17 +98,14 @@ async def whatsapp_webhook(request: Request, background_tasks: BackgroundTasks):
             msg_data.get("message", {}).get("conversation") or
             msg_data.get("message", {}).get("extendedTextMessage", {}).get("text") or ""
         )
-    # Generic payload fallback
     elif "message" in body:
         message_text = str(body["message"])
         sender = str(body.get("sender", sender))
 
     if message_text:
-        # Run agent asynchronously
         agent_result = await agent_engine.process_message(sender, message_text)
         response_text = agent_result["whatsapp_response"]
         
-        # Dispatch WhatsApp response via Evolution API / Twilio in background
         background_tasks.add_task(
             whatsapp_service.send_whatsapp_message, 
             recipient_phone=sender, 
