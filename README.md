@@ -6,30 +6,6 @@
 [![React 18](https://img.shields.io/badge/React-18.2.0-61DAFB.svg?style=flat&logo=react)](https://reactjs.org)
 [![Swiggy MCP](https://img.shields.io/badge/Swiggy-MCP--Protocol-FF6600.svg?style=flat)](https://swiggy.com)
 [![WhatsApp Evolution API](https://img.shields.io/badge/WhatsApp-Evolution--API-25D366.svg?style=flat&logo=whatsapp)](https://github.com/EvolutionAPI/evolution-api)
-[![21st.dev CLI](https://img.shields.io/badge/21st.dev-CLI%20v1.0-000000.svg?style=flat)](https://21st.dev)
-
----
-
-## 🎨 CLI Setup & Integration
-
-Zippy is pre-configured with the official `@21st-dev/cli` for searching, generating, and publishing 21st.dev design components.
-
-```bash
-# 1. Login to 21st.dev (or set API_KEY_21ST environment variable)
-21st login
-
-# 2. Search components, themes, and templates
-21st search "pricing table"
-21st search "food card" --type component
-
-# 3. Add components to the project
-21st add shadcn/button
-
-# 4. Generate UI variants with 21st AI
-21st generate "High protein food card with dark glassmorphism"
-
-# 5. In CI/CD scripts, pass --api-key $API_KEY_21ST
-```
 
 ---
 
@@ -38,7 +14,7 @@ Zippy is pre-configured with the official `@21st-dev/cli` for searching, generat
 ### The Friction in Traditional Food & Grocery Ordering
 Today, when a customer wants to order food or groceries, they face significant friction:
 1. **Decision Fatigue & Endless Scrolling**: Spending **20 to 30 minutes** browsing hundreds of restaurants and grocery categories.
-2. **Manual Rating & Review Comparison**: Reading customer reviews across multiple places trying to judge quality and portion size.
+2. **Manual Rating & Review Comparison**: Reading customer reviews across multiple apps trying to judge quality and portion size.
 3. **Discount & Coupon Hunting**: Manually trying 5-10 coupon codes to figure out which one provides the best price reduction.
 4. **Macro & Budget Friction**: Fitness-conscious users have to manually calculate calories, protein, and costs for every single dish.
 
@@ -70,9 +46,9 @@ Zippy's AI agent instantly interprets intent, checks real-time Swiggy catalog ra
 - **WhatsApp Integration**: Evolution API (Open-source WhatsApp Engine) & Twilio Webhook Router
 - **Data Validation**: Pydantic v2, HTTPX
 
-### Frontend Application (21st.dev UI)
+### Frontend Application
 - **Framework**: React 18, Vite, TypeScript
-- **Styling**: Tailwind CSS, Custom Dark Glassmorphic Design System (`#0B0F17`, Swiggy Orange `#FF6600`, Glowing Emerald `#10B981`)
+- **Styling**: Tailwind CSS, Minimalist Glassmorphic Design System (`#04060A`, Swiggy Orange `#FF6600`, Glowing Emerald `#10B981`)
 - **Icons**: Lucide React
 
 ---
@@ -104,7 +80,7 @@ graph TD
     Tool1 & Tool2 & Tool3 & Tool4 & Tool5 & Tool6 --> Database[( Swiggy Food & Instamart Catalog)]
     
     AIAgent -->|Formatted Message| WhatsAppProvider
-    FastAPI -->|Live Telemetry SSE| WebDashboard[🖥️ 21st.dev UI Dashboard]
+    FastAPI -->|Live Telemetry SSE| WebDashboard[🖥️ Web Dashboard]
 ```
 
 ---
@@ -138,9 +114,9 @@ sequenceDiagram
     Agent->>MCP: execute_tool("swiggy_place_order", {cart_id: "CART-89210"})
     MCP-->>Agent: Order Placed (SWG-89210)
     
-    Agent->>Backend: Format WhatsApp Text with Emojis & Order Summary
+    Agent->>Backend: Format WhatsApp Text with Order Summary
     Backend->>WhatsApp: Send Response Text
-    WhatsApp->>Customer: 🚀 Order Confirmed! SWG-89210 (ETA 20 mins)
+    WhatsApp->>Customer: Order Confirmed! SWG-89210 (ETA 20 mins)
 ```
 
 ---
@@ -182,7 +158,7 @@ Zippy/
 │   │   ├── services/
 │   │   │   └── api.ts            # API Client
 │   │   ├── App.tsx
-│   │   └── index.css             # 21st.dev Glassmorphism Styles
+│   │   └── index.css             # Glassmorphism Styles
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.ts
